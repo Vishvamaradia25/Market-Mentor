@@ -2,16 +2,17 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaLock, FaCloudSun } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const createUser = async () => {
-    const auth = getAuth(app);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user
@@ -20,7 +21,9 @@ const Signup = () => {
         console.log(error);
         }
     };
-
+const signupWithGoogle = () =>{
+    signInWithPopup(auth, googleProvider)
+}
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -100,6 +103,17 @@ const Signup = () => {
            onClick={createUser}
            >
               Sign up
+            </motion.button>
+          </div>
+          <div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+           onClick={signupWithGoogle}
+           >
+              Sign in with Google
             </motion.button>
           </div>
         </form>

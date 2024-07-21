@@ -1,28 +1,44 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
-import { FaEnvelope, FaLock, FaSun } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaSun, FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase';
 
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const signinUser = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+    const signinUser = async () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log("Signin successful", user);
-            // Redirect to homepage or dashboard after successful login
             navigate('/');
         } catch (error) {
             console.error("Signin error:", error.message);
-            // Here you can add code to show an error message to the user
+            setError(error.message);
+        }
+    };
+
+    const signinWithGoogle = async () => {
+        try {
+            // Ensure the user is always prompted to select an account
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            console.log("Google signin successful", user);
+            navigate('/');
+        } catch (error) {
+            console.error("Google signin error:", error);
+            setError(error.message);
         }
     };
 
@@ -46,7 +62,12 @@ const Login = () => {
                         Heavenly Sign In
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={signinUser}>
+                {error && (
+                    <div className="text-red-500 text-center mb-4">
+                        {error}
+                    </div>
+                )}
+                <form className="mt-8 space-y-6">
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
                             <label htmlFor="email" className="sr-only">Email address</label>
@@ -92,10 +113,23 @@ const Login = () => {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            type="submit"
+                            type="button"
                             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            onClick={signinUser}
                         >
                             Sign In
+                        </motion.button>
+                    </div>
+                    <div>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            type="button"
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                            onClick={signinWithGoogle}
+                        >
+                            <FaGoogle className="mr-2 h-5 w-5" />
+                            Sign In with Google
                         </motion.button>
                     </div>
                 </form>
