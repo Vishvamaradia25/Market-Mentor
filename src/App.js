@@ -1,23 +1,19 @@
-// App.js
 import React from 'react';
-import { motion } from 'framer-motion';
-import Navbar from './components/Navbar';
-import HomePage from './components/Homepage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Signup from './components/Signup';
+import Homepage from './components/Homepage';
+import Login from './components/Login';
 
 function App() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gradient-to-br from-purple-700 to-blue-500 text-white"
-    >
-      <Navbar />
-      <HomePage />
-    </motion.div>
+    <Router>
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Homepage />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-
-
