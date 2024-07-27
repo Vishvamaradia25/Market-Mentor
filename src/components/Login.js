@@ -1,54 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { FaEnvelope, FaLock, FaSun, FaGoogle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase';
+import { toast, Toaster } from 'react-hot-toast';
+
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (location.state?.message) {
+            toast.success(location.state.message);
+        }
+    }, [location.state]);
 
     const signinUser = async () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log("Signin successful", user);
-            navigate('/');
+            toast.success('Successfully signed in!');
+            navigate('/', { state: { message: 'Successfully signed in!' } });
         } catch (error) {
             console.error("Signin error:", error.message);
-            setError(error.message);
+            toast.error(error.message);
         }
     };
 
     const signinWithGoogle = async () => {
         try {
-            // Ensure the user is always prompted to select an account
             googleProvider.setCustomParameters({
                 prompt: 'select_account'
             });
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
             console.log("Google signin successful", user);
-            navigate('/');
+            toast.success('Successfully signed in with Google!');
+            navigate('/', { state: { message: 'Successfully signed in with Google!' } });
         } catch (error) {
             console.error("Google signin error:", error);
-            setError(error.message);
+            toast.error(error.message);
         }
     };
-
-    return (
+        return (
         <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300"
         >
+                  <Toaster position="top-center" reverseOrder={false} />
             <div className="max-w-md w-full space-y-8 p-10 bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow-lg">
                 <div className="text-center">
                     <motion.div

@@ -4,6 +4,8 @@ import { FaEnvelope, FaLock, FaCloudSun } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
+import { toast, Toaster } from 'react-hot-toast';
+
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
@@ -15,28 +17,41 @@ const Signup = () => {
   const createUser = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user
-        console.log(user);
+      const user = userCredential.user;
+      console.log(user);
+      toast.success('Account created successfully!');
+      navigate('/signin', { state: { message: 'Account created successfully! Please sign in.' } });
     } catch (error) {
-        console.log(error);
-        }
-    };
-const signupWithGoogle = () =>{
-    signInWithPopup(auth, googleProvider)
-}
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted");
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
-  return (
+  const signupWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log(user);
+      toast.success('Successfully signed up with Google!');
+      navigate('/', { state: { message: 'Successfully signed up with Google!' } });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createUser();
+  };
+    return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500"
     >
+            <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-md w-full space-y-8 p-10 bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow-lg">
         <div className="text-center">
           <motion.div

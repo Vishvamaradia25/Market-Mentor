@@ -1,0 +1,192 @@
+{
+    "HAL": {
+      "name": "Hindustan Aeronautics Limited",
+      "logo": "https://logo.clearbit.com/hal-india.com",
+      "description": "Hindustan Aeronautics Limited (HAL) is an Indian state-owned aerospace and defense company headquartered in Bangalore, India. It is one of Asia's largest aerospace companies.",
+      "stockInfo": {
+        "symbol": "HAL.NS",
+        "exchange": "NSE",
+        "currentPrice": 3850.25,
+        "change": 45.75,
+        "changePercent": 1.2
+      },
+      "keyStats": {
+        "marketCap": "257,000 Cr",
+        "peRatio": 32.5,
+        "dividend": 40,
+        "yearHigh": 4180.00,
+        "yearLow": 2550.00
+      },
+      "projects": [
+        "LCA Tejas",
+        "HAL Dhruv",
+        "Light Combat Helicopter (LCH)",
+        "Light Utility Helicopter (LUH)",
+        "Sukhoi Su-30MKI",
+        "SEPECAT Jaguar",
+        "BAE Hawk"
+      ],
+      "reasons": [
+        "Strategic importance in India's defense sector",
+        "Strong government support and policies",
+        "Robust order book and future projects",
+        "Diversified product portfolio",
+        "Strong financial performance",
+        "Strategic partnerships and collaborations",
+        "Expansion into civil aviation and exports",
+        "Regular dividend payments",
+        "Significant investment in R&D",
+        "Stable market position"
+      ]
+    },
+    "PARAS": {
+      "name": "Paras Defence and Space Technologies Ltd",
+      "logo": "https://logo.clearbit.com/parasdefence.com",
+      "description": "Paras Defence and Space Technologies Ltd is an Indian company specializing in defense and space optics, defense electronics, and electromagnetics.",
+      "stockInfo": {
+        "symbol": "PARAS.NS",
+        "exchange": "NSE",
+        "currentPrice": 681.15,
+        "change": -3.85,
+        "changePercent": -0.56
+      },
+      "keyStats": {
+        "marketCap": "2,658 Cr",
+        "peRatio": 95.23,
+        "dividend": 0.5,
+        "yearHigh": 815.00,
+        "yearLow": 458.15
+      },
+      "projects": [
+        "Defense Optics",
+        "Space Optics",
+        "Defense Electronics",
+        "EMP Protection"
+      ],
+      "reasons": [
+        "Niche player in defense and space technologies",
+        "Growing defense budget in India",
+        "Export potential",
+        "Diverse product portfolio",
+        "Focus on research and development",
+        "Strategic partnerships",
+        "Government's push for indigenous defense production",
+        "Increasing space exploration activities",
+        "Strong order book",
+        "Experienced management team"
+      ]
+    },
+    "WAAREE": {
+      "name": "Waaree Renewable Technologies Ltd",
+      "logo": "https://logo.clearbit.com/waaree.com",
+      "description": "Waaree Renewable Technologies Ltd is an Indian company focused on solar energy solutions, including solar panels, inverters, and EPC services.",
+      "stockInfo": {
+        "symbol": "WAAREE.NS",
+        "exchange": "NSE",
+        "currentPrice": 850.75,
+        "change": 12.25,
+        "changePercent": 1.46
+      },
+      "keyStats": {
+        "marketCap": "1,701 Cr",
+        "peRatio": 40.5,
+        "dividend": 1.0,
+        "yearHigh": 1050.00,
+        "yearLow": 550.00
+      },
+      "projects": [
+        "Solar PV Modules",
+        "Solar Inverters",
+        "Solar Water Pumps",
+        "EPC Services"
+      ],
+      "reasons": [
+        "Growing renewable energy sector in India",
+        "Government incentives for solar adoption",
+        "Expanding product portfolio",
+        "Strong brand presence in solar market",
+        "Export opportunities",
+        "Increasing focus on sustainability",
+        "Technological advancements in solar energy",
+        "Partnerships with global players",
+        "Robust manufacturing capabilities",
+        "Positive industry outlook"
+      ]
+    },
+    "ACE": {
+      "name": "Action Construction Equipment Ltd",
+      "logo": "https://logo.clearbit.com/ace-cranes.com",
+      "description": "Action Construction Equipment Ltd (ACE) is an Indian company manufacturing and marketing various types of cranes, construction, material handling, and agricultural equipment.",
+      "stockInfo": {
+        "symbol": "ACE.NS",
+        "exchange": "NSE",
+        "currentPrice": 685.50,
+        "change": 5.50,
+        "changePercent": 0.81
+      },
+      "keyStats": {
+        "marketCap": "8,172 Cr",
+        "peRatio": 28.56,
+        "dividend": 2.0,
+        "yearHigh": 750.00,
+        "yearLow": 280.00
+      },
+      "projects": [
+        "Mobile Cranes",
+        "Tower Cranes",
+        "Loaders",
+        "Forklifts",
+        "Tractors"
+      ],
+      "reasons": [
+        "Diverse product portfolio",
+        "Strong presence in construction equipment market",
+        "Government focus on infrastructure development",
+        "Export potential",
+        "Technological advancements in equipment",
+        "Growing urbanization and industrialization",
+        "Strategic partnerships",
+        "Robust distribution network",
+        "Focus on after-sales service",
+        "Positive industry outlook"
+      ]
+    },
+    "WIPRO": {
+      "name": "Wipro Ltd",
+      "logo": "https://logo.clearbit.com/wipro.com",
+      "description": "Wipro Limited is an Indian multinational corporation that provides information technology, consulting and business process services.",
+      "stockInfo": {
+        "symbol": "WIPRO.NS",
+        "exchange": "NSE",
+        "currentPrice": 425.75,
+        "change": -2.25,
+        "changePercent": -0.53
+      },
+      "keyStats": {
+        "marketCap": "233,162 Cr",
+        "peRatio": 18.96,
+        "dividend": 1.0,
+        "yearHigh": 483.95,
+        "yearLow": 351.85
+      },
+      "projects": [
+        "Digital Strategy",
+        "Cloud Services",
+        "Cybersecurity",
+        "AI and Analytics",
+        "Engineering Services"
+      ],
+      "reasons": [
+        "Strong presence in IT services globally",
+        "Diverse client base across industries",
+        "Focus on digital transformation services",
+        "Strategic acquisitions to enhance capabilities",
+        "Strong financial position",
+        "Investment in emerging technologies",
+        "Skilled workforce",
+        "Long-term client relationships",
+        "Sustainability initiatives",
+        "Consistent dividend payouts"
+      ]
+    }
+  }

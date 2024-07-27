@@ -1,0 +1,86 @@
+{
+  "stocks": [
+    { "symbol": "AAPL", "name": "Apple Inc.", "price": 150.25, "change": 1.5, "volume": 82345670, "marketCap": "2.45T" },
+    { "symbol": "GOOGL", "name": "Alphabet Inc.", "price": 2750.80, "change": -0.5, "volume": 1234567, "marketCap": "1.84T" },
+    { "symbol": "MSFT", "name": "Microsoft Corporation", "price": 305.75, "change": 0.8, "volume": 23456789, "marketCap": "2.31T" },
+    { "symbol": "AMZN", "name": "Amazon.com, Inc.", "price": 3380.20, "change": -0.2, "volume": 3456789, "marketCap": "1.71T" },
+    { "symbol": "FB", "name": "Meta Platforms, Inc.", "price": 330.15, "change": 2.1, "volume": 15678901, "marketCap": "927.26B" },
+    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 750.80, "change": -0.5, "volume": 28901234, "marketCap": "756.22B" },
+    { "symbol": "NVDA", "name": "NVIDIA Corporation", "price": 205.75, "change": 0.8, "volume": 34567890, "marketCap": "512.31B" }
+  ],
+  "watchedStocks": [
+    { "symbol": "AAPL", "name": "Apple Inc.", "price": 150.25, "change": 1.5, "volume": 82345670, "marketCap": "2.45T" },
+    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 750.80, "change": -0.5, "volume": 28901234, "marketCap": "756.22B" },
+    { "symbol": "NVDA", "name": "NVIDIA Corporation", "price": 205.75, "change": 0.8, "volume": 34567890, "marketCap": "512.31B" },
+    { "symbol": "AMD", "name": "Advanced Micro Devices, Inc.", "price": 90.20, "change": -0.2, "volume": 45678901, "marketCap": "109.41B" },
+    { "symbol": "MSFT", "name": "Microsoft Corporation", "price": 305.15, "change": 2.1, "volume": 23456789, "marketCap": "2.31T" }
+  ],
+  "markets": [
+    { "name": "S&P 500", "value": 4185.47, "change": 0.75, "icon": "FaChartLine", "volume": "2.3B", "yearToDate": "11.45%" },
+    { "name": "Dow Jones", "value": 33800.60, "change": -0.16, "icon": "FaGlobeAmericas", "volume": "323.4M", "yearToDate": "10.52%" },
+    { "name": "NASDAQ", "value": 14041.91, "change": 0.51, "icon": "FaCoins", "volume": "4.5B", "yearToDate": "8.95%" },
+    { "name": "Russell 2000", "value": 2261.46, "change": 0.88, "icon": "FaChartBar", "volume": "1.1B", "yearToDate": "14.62%" },
+    { "name": "Crude Oil", "value": 63.13, "change": 0.21, "icon": "FaOilCan", "volume": "1.2M", "yearToDate": "30.12%" },
+    { "name": "Gold", "value": 1768.30, "change": -0.45, "icon": "FaCoins", "volume": "174.3K", "yearToDate": "-6.85%" },
+    { "name": "10-Year Treasury", "value": 1.58, "change": 0.02, "icon": "FaFileInvoiceDollar", "volume": "N/A", "yearToDate": "72.53%" }
+  ],
+  "topMovers": [
+    { "symbol": "GME", "name": "GameStop Corp.", "price": 158.36, "change": 18.76, "volume": 14567890, "sector": "Consumer Cyclical", "dayRange": "145.20 - 165.45" },
+    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 677.02, "change": -3.39, "volume": 28901234, "sector": "Auto Manufacturers", "dayRange": "670.32 - 699.98" },
+    { "symbol": "PLTR", "name": "Palantir Technologies", "price": 23.29, "change": 6.21, "volume": 76543210, "sector": "Technology", "dayRange": "22.15 - 24.50" },
+    { "symbol": "NIO", "name": "NIO Inc.", "price": 38.12, "change": -4.56, "volume": 87654321, "sector": "Auto Manufacturers", "dayRange": "37.25 - 40.18" },
+    { "symbol": "AAPL", "name": "Apple Inc.", "price": 133.11, "change": 2.02, "volume": 82345670, "sector": "Technology", "dayRange": "131.45 - 134.20" },
+    { "symbol": "COIN", "name": "Coinbase Global, Inc.", "price": 294.75, "change": 10.35, "volume": 23456789, "sector": "Financial Services", "dayRange": "280.10 - 301.25" },
+    { "symbol": "MRNA", "name": "Moderna, Inc.", "price": 165.89, "change": -5.67, "volume": 9876543, "sector": "Healthcare", "dayRange": "162.30 - 172.45" }
+  ],
+  "sectorPerformance": [
+    { "name": "Technology", "change": 1.25, "ytdChange": 15.3 },
+    { "name": "Healthcare", "change": -0.5, "ytdChange": 8.7 },
+    { "name": "Financials", "change": 0.8, "ytdChange": 22.1 },
+    { "name": "Consumer Discretionary", "change": 0.3, "ytdChange": 11.9 },
+    { "name": "Industrials", "change": 1.1, "ytdChange": 14.5 },
+    { "name": "Energy", "change": -1.2, "ytdChange": 30.2 }
+  ],
+    "companies": [
+      {
+        "symbol": "HAL",
+        "name": "Hindustan Aeronautics Limited",
+        "logo": "https://logo.clearbit.com/hal-india.com",
+        "price": 3850.25,
+        "change": 45.75,
+        "marketCap": "257,000 Cr"
+      },
+      {
+        "symbol": "PARAS",
+        "name": "Paras Defence and Space Technologies Ltd",
+        "logo": "https://logo.clearbit.com/parasdefence.com",
+        "price": 681.15,
+        "change": -3.85,
+        "marketCap": "2,658 Cr"
+      },
+      {
+        "symbol": "WAAREE",
+        "name": "Waaree Renewable Technologies Ltd",
+        "logo": "https://logo.clearbit.com/waaree.com",
+        "price": 850.75,
+        "change": 12.25,
+        "marketCap": "1,701 Cr"
+      },
+      {
+        "symbol": "ACE",
+        "name": "Action Construction Equipment Ltd",
+        "logo": "https://logo.clearbit.com/ace-cranes.com",
+        "price": 685.50,
+        "change": 5.50,
+        "marketCap": "8,172 Cr"
+      },
+      {
+        "symbol": "WIPRO",
+        "name": "Wipro Ltd",
+        "logo": "https://logo.clearbit.com/wipro.com",
+        "price": 425.75,
+        "change": -2.25,
+        "marketCap": "233,162 Cr"
+      }
+    ]
+}
