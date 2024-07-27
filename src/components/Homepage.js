@@ -444,17 +444,7 @@ const TopMovers = ({ topMovers }) => {
     </div>
   );
 };
-const TradingViewWidget = () => {
-  return (
-    <div className="bg-gray-800 rounded-lg p-4 h-96">
-      <h2 className="text-xl font-bold mb-4">Market Chart</h2>
-      <div className="bg-gray-700 h-80 flex items-center justify-center">
-        <p className="text-gray-400">TradingView Chart Placeholder</p>
-        {/* In a real implementation, you would embed the TradingView widget here */}
-      </div>
-    </div>
-  );
-};
+
 
 const NewsWidget = ({ news, loading, error }) => {
   if (loading) {
