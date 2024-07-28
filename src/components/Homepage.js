@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaChartLine, FaExchangeAlt, FaDollarSign, FaArrowUp, FaArrowDown, FaChartBar, FaFileInvoiceDollar, FaGlobeAmericas, FaCoins, FaOilCan, FaStar, FaCaretUp, FaCaretDown, FaNewspaper, FaApple, FaMicrosoft, FaAmazon, FaGoogle, FaFacebook, FaSearch, FaBell, FaUser, FaListUl, FaCog, FaSignOutAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaChartLine, FaPlus, FaMinus, FaArrowUp, FaArrowDown, FaChartBar, FaFileInvoiceDollar, FaGlobeAmericas, FaCoins, FaOilCan, FaStar, FaCaretUp, FaCaretDown, FaNewspaper, FaTimes, FaChevronLeft, FaChevronRight, FaGoogle, FaFacebook, FaSearch, FaBell, FaUser, FaListUl, FaCog, FaSignOutAlt, FaExternalLinkAlt } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast, Toaster } from 'react-hot-toast';
@@ -76,7 +76,7 @@ const HomePage = () => {
           initial={{ x: -250 }}
           animate={{ x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-64 bg-gray-800 p-4"
+          className="w-20 bg-gray-800 p-4"
         >
           <WatchList watchedStocks={data.watchedStocks} />
         </motion.nav>
@@ -129,114 +129,11 @@ const HomePage = () => {
         </main>
       </div>
 
-      {/* Footer Navigation */}
-      <motion.footer
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="bg-gray-800 p-4 fixed bottom-0 w-full"
-      >
-        <div className="flex justify-around">
-          {[FaChartLine, FaNewspaper, FaListUl, FaCog].map((Icon, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.2, rotate: 360 }}
-              whileTap={{ scale: 0.8 }}
-            >
-              <Icon className="text-gray-400 hover:text-white cursor-pointer" />
-            </motion.div>
-          ))}
-        </div>
-      </motion.footer>
+  
     </div>
   );
 };
 
-const CompanyCards = ({ companies, user }) => {
-  const [favorites, setFavorites] = useState({});
-
-  useEffect(() => {
-    if (user) {
-      fetchFavorites();
-    }
-  }, [user]);
-
-  const fetchFavorites = async () => {
-    if (!user) return;
-
-    const favoritesRef = collection(db, 'favorites');
-    const q = query(favoritesRef, where('userId', '==', user.uid));
-    const querySnapshot = await getDocs(q);
-    const userFavorites = {};
-    querySnapshot.forEach((doc) => {
-      userFavorites[doc.data().symbol] = true;
-    });
-    setFavorites(userFavorites);
-  };
-
-  const toggleFavorite = async (company) => {
-    if (!user) {
-      alert('Please log in to add favorites');
-      return;
-    }
-
-    const favoriteRef = doc(db, 'favorites', `${user.uid}_${company.symbol}`);
-    
-    if (favorites[company.symbol]) {
-      await deleteDoc(favoriteRef);
-      setFavorites({ ...favorites, [company.symbol]: false });
-    } else {
-      await setDoc(favoriteRef, {
-        userId: user.uid,
-        symbol: company.symbol,
-        name: company.name,
-        addedAt: new Date()
-      });
-      setFavorites({ ...favorites, [company.symbol]: true });
-    }
-  };
-
-  return (
-    <>
-      <h1 className='font-bold text-2xl my-5'>Company List</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {companies.map((company) => (
-          <motion.div
-            key={company.symbol}
-            className="bg-gray-800 rounded-lg p-4 shadow-lg cursor-pointer relative"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link to={`/company/${company.symbol}`}>
-              <div className="flex items-center mb-2">
-                <img src={company.logo} alt={company.name} className="w-8 h-8 mr-2" />
-                <h3 className="text-lg font-bold">{company.name}</h3>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold">${company.price.toFixed(2)}</span>
-                <span className={`flex items-center ${company.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {company.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                  {Math.abs(company.change).toFixed(2)}%
-                </span>
-              </div>
-              <div className="text-sm text-gray-400 mt-2">
-                Market Cap: {company.marketCap}
-              </div>
-            </Link>
-            <motion.button
-              className={`absolute top-2 right-2 text-xl ${favorites[company.symbol] ? 'text-yellow-400' : 'text-gray-400'}`}
-              onClick={() => toggleFavorite(company)}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
-            >
-              <FaStar />
-            </motion.button>
-          </motion.div>
-        ))}
-      </div>
-    </>
-  );
-};
 
 
 const StockTicker = ({ stocks }) => {
@@ -261,61 +158,200 @@ const StockTicker = ({ stocks }) => {
     </div>
   );
 };
-
-
-const WatchList = ({ user }) => {
-  const [favorites, setFavorites] = useState([]);
+// In CompanyCards component
+const CompanyCards = ({ companies }) => {
+  const [favorites, setFavorites] = useState({});
 
   useEffect(() => {
-    if (user) {
-      fetchFavorites();
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    setFavorites(storedFavorites);
+  }, []);
+
+  const toggleFavorite = (company) => {
+    const updatedFavorites = { ...favorites };
+    if (updatedFavorites[company.symbol]) {
+      delete updatedFavorites[company.symbol];
+    } else {
+      updatedFavorites[company.symbol] = company;
     }
-  }, [user]);
-
-  const fetchFavorites = async () => {
-    if (!user) return;
-
-    const favoritesRef = collection(db, 'favorites');
-    const q = query(favoritesRef, where('userId', '==', user.uid));
-    const querySnapshot = await getDocs(q);
-    const userFavorites = [];
-    querySnapshot.forEach((doc) => {
-      userFavorites.push(doc.data());
-    });
-    setFavorites(userFavorites);
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    
+    // Dispatch a custom event to notify WatchList
+    window.dispatchEvent(new Event('favoritesUpdated'));
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4">
-      <h2 className="text-xl font-bold mb-4 flex items-center">
-        <FaStar className="text-yellow-400 mr-2" />
-        Watchlist
-      </h2>
-      {favorites.length === 0 ? (
-        <p className="text-gray-400">No favorites added yet.</p>
-      ) : (
-        <ul className="space-y-4">
-          {favorites.map((stock) => (
-            <motion.li
-              key={stock.symbol}
-              className="flex justify-between items-center"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div>
-                <span className="font-bold">{stock.symbol}</span>
-                <span className="ml-2 text-sm text-gray-400">{stock.name}</span>
+    <>
+      <h1 className='font-bold text-2xl my-5'>Company List</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {companies.map((company) => (
+          <motion.div
+            key={company.symbol}
+            className="bg-gray-800 rounded-lg p-4 shadow-lg relative"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+<Link to={`/company/${company.symbol}`}>
+              <div className="flex items-center mb-2">
+                <img src={company.logo} alt={company.name} className="w-8 h-8 mr-2" />
+                <h3 className="text-lg font-bold">{company.name}</h3>
               </div>
-              {/* You may want to fetch real-time data for price and change */}
-              <span className="text-gray-400">Loading...</span>
-            </motion.li>
-          ))}
-        </ul>
-      )}
-    </div>
+              <div className="flex justify-between items-center">
+                <span className="text-2xl font-bold">${company.price.toFixed(2)}</span>
+                <span className={`flex items-center ${company.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {company.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
+                  {Math.abs(company.change).toFixed(2)}%
+                </span>
+              </div>
+              <div className="text-sm text-gray-400 mt-2">
+                Market Cap: {company.marketCap}
+              </div>
+            </Link>            <div className="mt-4 flex justify-between items-center">
+              <motion.button
+                className={`${
+                  favorites[company.symbol] 
+                    ? "bg-red-500 hover:bg-red-600" 
+                    : "bg-green-500 hover:bg-green-600"
+                } text-white font-bold py-2 px-4 rounded flex items-center`}
+                onClick={() => toggleFavorite(company)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {favorites[company.symbol] ? (
+                  <>
+                    <FaMinus className="mr-2" /> Remove from Favorites
+                  </>
+                ) : (
+                  <>
+                    <FaPlus className="mr-2" /> Add to Favorites
+                  </>
+                )}
+              </motion.button>
+              <FaStar className={`text-2xl ${favorites[company.symbol] ? 'text-yellow-400' : 'text-gray-400'}`} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </>
   );
 };
+
+// In WatchList component
+
+const WatchList = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    const loadFavorites = () => {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || {};
+      setFavorites(Object.values(storedFavorites));
+    };
+
+    loadFavorites();
+    window.addEventListener('favoritesUpdated', loadFavorites);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('favoritesUpdated', loadFavorites);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   setIsOpen(windowWidth >= 1024);
+  // }, [windowWidth]);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const sidebarVariants = {
+    open: { width: windowWidth >= 1024 ? '300px' : '80%', x: 0 },
+    closed: { width: '60px', x: 0 },
+  };
+
+  const contentVariants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: -10 },
+  };
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 h-full bg-gray-800 text-white shadow-lg z-50 flex mt-16"
+      initial="closed"
+      animate={isOpen ? "open" : "closed"}
+      variants={sidebarVariants}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
+      <motion.div className="flex flex-col w-full overflow-hidden">
+        <motion.div 
+          className="p-4 flex items-center justify-between"
+          variants={contentVariants}
+        >
+          <h2 className="text-2xl font-bold flex items-center">
+            <FaStar className="text-yellow-400 mr-2" />
+            Watchlist
+          </h2>
+          {windowWidth < 1024 && (
+            <button onClick={toggleSidebar}>
+              <FaTimes />
+            </button>
+          )}
+        </motion.div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              className="flex-grow overflow-y-auto"
+              variants={contentVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              {favorites.length === 0 ? (
+                <p className="text-gray-400 p-4">No favorites added yet.</p>
+              ) : (
+                <ul className="space-y-2 p-2">
+                  {favorites.map((stock) => (
+                    <motion.li
+                      key={stock.symbol}
+                      className="bg-gray-700 rounded-lg p-3 shadow-md"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold">{stock.symbol}</span>
+                        <span className="text-sm">${stock.price.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between items-center mt-1">
+                        <span className="text-xs text-gray-400">{stock.name}</span>
+                        <span className={`text-xs ${stock.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                          {stock.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
+                          {Math.abs(stock.change).toFixed(2)}%
+                        </span>
+                      </div>
+                    </motion.li>
+                  ))}
+                </ul>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      <motion.button
+        className="absolute top-1/2 -right-3 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={toggleSidebar}
+      >
+        {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
+      </motion.button>
+    </motion.div>
+  );
+};
+
+
 
 const MarketOverview = ({ markets, sectorPerformance }) => {
   const iconMap = {
