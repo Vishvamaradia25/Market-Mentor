@@ -1,530 +1,256 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaChartLine, FaPlus, FaMinus, FaArrowUp, FaArrowDown, FaChartBar, FaFileInvoiceDollar, FaGlobeAmericas, FaCoins, FaOilCan, FaStar, FaCaretUp, FaCaretDown, FaNewspaper, FaTimes, FaChevronLeft, FaChevronRight, FaGoogle, FaFacebook, FaSearch, FaBell, FaUser, FaListUl, FaCog, FaSignOutAlt, FaExternalLinkAlt } from 'react-icons/fa';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { toast, Toaster } from 'react-hot-toast';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import AIMarketDashboard from './NewsAnalysisChart'; // Import the new component
-// Import the JSON data
-import data from '../data/homedata.json';
-import Navbar from './Navbar';
-import { getAuth } from 'firebase/auth';
-import { app } from '../firebase';
-import firebase from 'firebase/compat/app';
-import { getFirestore, doc, setDoc, deleteDoc, collection, query, where, getDocs } from 'firebase/firestore';
-
-
-const db = getFirestore(app);
-const auth = getAuth(app);
-
+import { FaRobot, FaChartLine, FaNewspaper, FaGraduationCap, FaSearch, FaBell, FaUser, FaStar } from 'react-icons/fa';
+import { LineChart, Line, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { Link, useNavigate } from 'react-router-dom';
+import AIInvestmentSimulator from './AISearch';
+// Assume these are imported from your data file
+import homedata from '../data/homedata.json';
+import logo from '../assets/Screenshot 2024-09-05 at 11.00.11 PM.png'
 
 const HomePage = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const location = useLocation();
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
-
-
+  const [aiQuery, setAiQuery] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [hoveredCompany, setHoveredCompany] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state?.message) {
-      toast.success(location.state.message);
-    }
-  }, [location.state]);
-
-  useEffect(() => {
-    const fetchNews = async () => {
+    const loadFavorites = () => {
       try {
-        const response = await axios.get('https://api.benzinga.com/api/v2/news', {
-          params: {
-            token: '9538017169c049b9bce20a77f88d8166',
-            pageSize: 5,
-            displayOutput: 'full',
-            sortBy: 'date',
-            dateFrom: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          }
-        });
-
-        setNews(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching news:", err);
-        setError("Failed to fetch news. Please try again later.");
-        setLoading(false);
+        const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+        return Array.isArray(storedFavorites) ? storedFavorites : [];
+      } catch (error) {
+        console.error('Error loading favorites:', error);
+        return [];
       }
     };
 
-    fetchNews();
+    setFavorites(loadFavorites());
   }, []);
 
+  const handleAiQuery = (e) => {
+    e.preventDefault();
+    // Simulated AI response
+    setAiResponse(`AI analysis for "${aiQuery}": This is a simulated response. In a real application, this would be the result of processing the query through an AI model.`);
+  };
+
+  const toggleFavorite = (symbol) => {
+    setFavorites(prevFavorites => {
+      const newFavorites = prevFavorites.includes(symbol)
+        ? prevFavorites.filter(fav => fav !== symbol)
+        : [...prevFavorites, symbol];
+      localStorage.setItem('favorites', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-
-     <Navbar />
-
-      {/* Stock Ticker */}
-      <StockTicker stocks={data.stocks} />
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-black opacity-50"></div>
+        <div className="absolute inset-0 bg-[url('/circuit-pattern.svg')] opacity-10"></div>
+      </div>
 
       {/* Main Content */}
-      <div className="flex">
-        {/* Sidebar */}
-        <motion.nav
-          initial={{ x: -250 }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-20 bg-gray-800 p-4"
-        >
-          <WatchList watchedStocks={data.watchedStocks} />
-        </motion.nav>
+      <div className="relative z-10">
+        {/* Navigation */}
+        <nav className="bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex items-center">
+                <motion.img 
+                  className="h-10 w-auto"
+                  src={logo} 
+                  alt="IntelliStock"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <div className="ml-10 flex items-baseline space-x-4">
+                  {['dashboard', 'predictions', 'analysis', 'learn'].map((item) => (
+                    <motion.button
+                      key={item}
+                      onClick={() => setActiveSection(item)}
+                      className={`px-3 py-2 rounded-md text-sm font-medium ${activeSection === item ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center">
+                <motion.button
+                  className="p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaBell className="h-6 w-6" />
+                </motion.button>
+                <div className="ml-3 relative">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+<Link to="/login"><button className='text-white'>Login</button>   </Link>                 </button>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
 
-        {/* Main Panel */}
-        <main className="flex-grow p-4">
-          {/* Tabs */}
-          <div className="flex mb-4 border-b border-gray-700">
-            {['overview', 'movers', 'news'].map((tab) => (
+        {/* Main Dashboard */}
+        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          {/* AI Assistant */}
+          <motion.div
+            className="mb-8 bg-blue-900 bg-opacity-50 rounded-lg p-6 backdrop-filter backdrop-blur-lg"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <FaRobot className="mr-2" /> AI Market Assistant
+            </h2>
+            <form onSubmit={handleAiQuery} className="flex items-center">
+              <input
+                type="text"
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                placeholder="Ask about market trends, stock analysis, or trading strategies..."
+                className="flex-grow p-3 rounded-l-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
               <motion.button
-                key={tab}
-                className={`mr-4 py-2 ${activeTab === tab ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-400'}`}
-                onClick={() => setActiveTab(tab)}
+                type="submit"
+                className="bg-blue-600 text-white p-3 rounded-r-md hover:bg-blue-700 transition duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                <FaSearch className="h-6 w-6" />
               </motion.button>
-            ))}
-          </div>
-
-          {/* Tab Content */}
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-{activeTab === 'overview' && (
-  <>
-  <CompanyCards companies={data.companies} />
-  <MarketOverview markets={data.markets} sectorPerformance={data.sectorPerformance} />
-</>
-)}            {activeTab === 'movers' && <TopMovers topMovers={data.topMovers} />}
-            {activeTab === 'news' && <NewsWidget news={news} loading={loading} error={error} />}
+            </form>
+            <AnimatePresence>
+              {aiResponse && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-4 p-4 bg-gray-800 rounded-md"
+                >
+                  <p className="text-blue-300">{aiResponse}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
-  {/* News Analysis Chart */}
-  {activeTab === 'news' && !loading && !error && (
-      <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="mb-12"
-    >
-            <AIMarketDashboard news={news} />
-            </motion.div>
-          )}
-       
+
+        {/* Market Pulse */}
+        <motion.div
+            className="mb-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <FaChartLine className="mr-2" /> Market Pulse
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {homedata.featuredCompanies.map((company, index) => (
+        <motion.div
+          key={company.symbol}
+          className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-filter backdrop-blur-lg cursor-pointer"
+          whileHover={{ scale: 1.05, zIndex: 1 }}
+          onHoverStart={() => setHoveredCompany(company)}
+          onHoverEnd={() => setHoveredCompany(null)}
+          onClick={() => navigate(`/company/${company.symbol}`)}
+        >
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xl font-semibold">{company.name} ({company.symbol})</h3>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(company.symbol);
+                }}
+                className={`p-1 rounded-full ${favorites.includes(company.symbol) ? 'text-yellow-400' : 'text-gray-400'}`}
+              >
+                <FaStar className="h-6 w-6" />
+              </motion.button>
+            </div>
+            {/* ... rest of the company card content ... */}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+          </motion.div>
+
+          {/* Hovering Company Details */}
+          <AnimatePresence>
+            {hoveredCompany && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="fixed bottom-4 right-4 w-80 bg-gray-900 p-4 rounded-lg shadow-lg"
+              >
+                <h3 className="text-xl font-bold mb-2">{hoveredCompany.name} Details</h3>
+                <p><strong>Market Cap:</strong> ₹{hoveredCompany.marketCap}</p>
+                <p><strong>Volume:</strong> {hoveredCompany.volume}</p>
+                <p><strong>52 Week High:</strong> ₹{hoveredCompany.high52}</p>
+                <p><strong>52 Week Low:</strong> ₹{hoveredCompany.low52}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* News Feed */}
+          <motion.div
+            className="mb-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <FaNewspaper className="mr-2" /> Market Insights
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {homedata.latestNews.map((news, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gray-800 bg-opacity-50 rounded-lg p-4 backdrop-filter backdrop-blur-lg"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <h3 className="text-lg font-semibold mb-2">{news.title}</h3>
+                  <p className="text-sm text-gray-300 mb-2">{news.summary}</p>
+                  <div className="flex justify-between items-center text-xs text-gray-400">
+                    <span>{news.source}</span>
+                    <span>{news.date}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Trading Simulator */}
+         {/* Replace the existing Trading Simulator section with this */}
+<motion.div
+  className="mb-8 bg-indigo-900 bg-opacity-50 rounded-lg p-6 backdrop-filter backdrop-blur-lg"
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.6 }}
+>
+  <h2 className="text-2xl font-bold mb-4 flex items-center">
+    <FaGraduationCap className="mr-2" /> AI-Powered Investment Simulator
+  </h2>
+  <p className="mb-4">Get personalized investment advice based on your preferences and favorite companies.</p>
+  <AIInvestmentSimulator favorites={favorites} homedata={homedata} />
+</motion.div>
         </main>
       </div>
-
-  
-    </div>
-  );
-};
-
-
-
-const StockTicker = ({ stocks }) => {
-  return (
-    <div className="bg-gray-800 p-2 overflow-hidden">
-      <motion.div
-        animate={{ x: ['0%', '-50%'] }}
-        transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
-        className="flex space-x-8 whitespace-nowrap"
-      >
-        {stocks.concat(stocks).map((stock, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            <span className="font-bold text-sm">{stock.symbol}</span>
-            <span className="text-sm">${stock.price.toFixed(2)}</span>
-            <span className={`flex items-center text-xs ${stock.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-              {stock.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
-              {Math.abs(stock.change).toFixed(2)}%
-            </span>
-          </div>
-        ))}
-      </motion.div>
-    </div>
-  );
-};
-// In CompanyCards component
-const CompanyCards = ({ companies }) => {
-  const [favorites, setFavorites] = useState({});
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || {};
-    setFavorites(storedFavorites);
-  }, []);
-
-  const toggleFavorite = (company) => {
-    const updatedFavorites = { ...favorites };
-    if (updatedFavorites[company.symbol]) {
-      delete updatedFavorites[company.symbol];
-    } else {
-      updatedFavorites[company.symbol] = company;
-    }
-    setFavorites(updatedFavorites);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-    
-    // Dispatch a custom event to notify WatchList
-    window.dispatchEvent(new Event('favoritesUpdated'));
-  };
-
-  return (
-    <>
-      <h1 className='font-bold text-2xl my-5'>Company List</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {companies.map((company) => (
-          <motion.div
-            key={company.symbol}
-            className="bg-gray-800 rounded-lg p-4 shadow-lg relative"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-<Link to={`/company/${company.symbol}`}>
-              <div className="flex items-center mb-2">
-                <img src={company.logo} alt={company.name} className="w-8 h-8 mr-2" />
-                <h3 className="text-lg font-bold">{company.name}</h3>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold">${company.price.toFixed(2)}</span>
-                <span className={`flex items-center ${company.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {company.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                  {Math.abs(company.change).toFixed(2)}%
-                </span>
-              </div>
-              <div className="text-sm text-gray-400 mt-2">
-                Market Cap: {company.marketCap}
-              </div>
-            </Link>            <div className="mt-4 flex justify-between items-center">
-              <motion.button
-                className={`${
-                  favorites[company.symbol] 
-                    ? "bg-red-500 hover:bg-red-600" 
-                    : "bg-green-500 hover:bg-green-600"
-                } text-white font-bold py-2 px-4 rounded flex items-center`}
-                onClick={() => toggleFavorite(company)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {favorites[company.symbol] ? (
-                  <>
-                    <FaMinus className="mr-2" /> Remove from Favorites
-                  </>
-                ) : (
-                  <>
-                    <FaPlus className="mr-2" /> Add to Favorites
-                  </>
-                )}
-              </motion.button>
-              <FaStar className={`text-2xl ${favorites[company.symbol] ? 'text-yellow-400' : 'text-gray-400'}`} />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </>
-  );
-};
-
-// In WatchList component
-
-const WatchList = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-
-    const loadFavorites = () => {
-      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || {};
-      setFavorites(Object.values(storedFavorites));
-    };
-
-    loadFavorites();
-    window.addEventListener('favoritesUpdated', loadFavorites);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('favoritesUpdated', loadFavorites);
-    };
-  }, []);
-
-  // useEffect(() => {
-  //   setIsOpen(windowWidth >= 1024);
-  // }, [windowWidth]);
-
-  const toggleSidebar = () => setIsOpen(!isOpen);
-
-  const sidebarVariants = {
-    open: { width: windowWidth >= 1024 ? '300px' : '80%', x: 0 },
-    closed: { width: '60px', x: 0 },
-  };
-
-  const contentVariants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, x: -10 },
-  };
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 h-full bg-gray-800 text-white shadow-lg z-50 flex mt-16"
-      initial="closed"
-      animate={isOpen ? "open" : "closed"}
-      variants={sidebarVariants}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
-      <motion.div className="flex flex-col w-full overflow-hidden">
-        <motion.div 
-          className="p-4 flex items-center justify-between"
-          variants={contentVariants}
-        >
-          <h2 className="text-2xl font-bold flex items-center">
-            <FaStar className="text-yellow-400 mr-2" />
-            Watchlist
-          </h2>
-          {windowWidth < 1024 && (
-            <button onClick={toggleSidebar}>
-              <FaTimes />
-            </button>
-          )}
-        </motion.div>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              className="flex-grow overflow-y-auto"
-              variants={contentVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
-              {favorites.length === 0 ? (
-                <p className="text-gray-400 p-4">No favorites added yet.</p>
-              ) : (
-                <ul className="space-y-2 p-2">
-                  {favorites.map((stock) => (
-                    <motion.li
-                      key={stock.symbol}
-                      className="bg-gray-700 rounded-lg p-3 shadow-md"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-bold">{stock.symbol}</span>
-                        <span className="text-sm">${stock.price.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center mt-1">
-                        <span className="text-xs text-gray-400">{stock.name}</span>
-                        <span className={`text-xs ${stock.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                          {stock.change > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                          {Math.abs(stock.change).toFixed(2)}%
-                        </span>
-                      </div>
-                    </motion.li>
-                  ))}
-                </ul>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-      <motion.button
-        className="absolute top-1/2 -right-3 bg-blue-500 text-white p-2 rounded-full shadow-lg"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleSidebar}
-      >
-        {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-      </motion.button>
-    </motion.div>
-  );
-};
-
-
-
-const MarketOverview = ({ markets, sectorPerformance }) => {
-  const iconMap = {
-    FaChartLine,
-    FaGlobeAmericas,
-    FaCoins,
-    FaOilCan,
-    FaChartBar,
-    FaFileInvoiceDollar
-  };
-
-  return (
-    <div className="space-y-8">
-                            <h1 className='font-bold text-2xl'>Market Overview</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {markets.map((market, index) => {
-          const Icon = iconMap[market.icon];
-          return (
-            <motion.div
-              key={index}
-              className="bg-gray-800 rounded-lg p-4 flex flex-col"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="flex items-center mb-2">
-                <Icon className="text-3xl mr-4 text-blue-400" />
-                <h3 className="font-bold text-lg">{market.name}</h3>
-              </div>
-              <p className="text-2xl font-semibold mb-2">{typeof market.value === 'number' ? market.value.toLocaleString() : market.value}</p>
-              <div className="flex justify-between items-center text-sm">
-                <span className={`${market.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {market.change > 0 ? '+' : ''}{market.change}%
-                </span>
-                <span className="text-gray-400">Vol: {market.volume}</span>
-                <span className="text-gray-400">YTD: {market.yearToDate}</span>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h2 className="text-xl font-bold mb-4">Sector Performance</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {sectorPerformance.map((sector, index) => (
-            <motion.div
-              key={index}
-              className="bg-gray-700 rounded-lg p-3"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <h4 className="font-semibold mb-2">{sector.name}</h4>
-              <p className={`text-lg ${sector.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                {sector.change > 0 ? '+' : ''}{sector.change}%
-              </p>
-              <p className="text-sm text-gray-400">YTD: {sector.ytdChange}%</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const TopMovers = ({ topMovers }) => {
-  const [filter, setFilter] = useState('all');
-
-  const filteredMovers = topMovers.filter(stock => {
-    if (filter === 'gainers') return stock.change > 0;
-    if (filter === 'losers') return stock.change < 0;
-    return true;
-  });
-
-  return (
-    <div className="bg-gray-800 rounded-lg p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Top Movers</h2>
-        <div className="flex space-x-2">
-          <button
-            className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-blue-500' : 'bg-gray-700'}`}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          <button
-            className={`px-3 py-1 rounded ${filter === 'gainers' ? 'bg-green-500' : 'bg-gray-700'}`}
-            onClick={() => setFilter('gainers')}
-          >
-            Gainers
-          </button>
-          <button
-            className={`px-3 py-1 rounded ${filter === 'losers' ? 'bg-red-500' : 'bg-gray-700'}`}
-            onClick={() => setFilter('losers')}
-          >
-            Losers
-          </button>
-        </div>
-      </div>
-      <ul className="space-y-4">
-        {filteredMovers.map((stock, index) => (
-          <motion.li
-            key={index}
-            className="bg-gray-700 rounded-lg p-4"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div className="flex justify-between items-center mb-2">
-              <div>
-                <span className="font-bold text-lg">{stock.symbol}</span>
-                <span className="ml-2 text-sm text-gray-400">{stock.name}</span>
-              </div>
-              <span className={`text-lg font-semibold ${stock.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                {stock.change > 0 ? <FaArrowUp className="inline mr-1" /> : <FaArrowDown className="inline mr-1" />}
-                {Math.abs(stock.change).toFixed(2)}%
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div>Price: ${stock.price.toFixed(2)}</div>
-              <div>Volume: {stock.volume.toLocaleString()}</div>
-              <div>Sector: {stock.sector}</div>
-              <div>Day Range: {stock.dayRange}</div>
-            </div>
-          </motion.li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-
-const NewsWidget = ({ news, loading, error }) => {
-  if (loading) {
-    return <div className="bg-gray-800 rounded-lg p-4">Loading news...</div>;
-  }
-
-  if (error) {
-    return <div className="bg-gray-800 rounded-lg p-4 text-red-500">{error}</div>;
-  }
-
-  return (
-    <div className="bg-gray-800 rounded-lg p-4">
-      <h2 className="text-xl font-bold mb-4 flex items-center">
-        <FaNewspaper className="mr-2" />
-        Latest News
-      </h2>
-      <ul className="space-y-4">
-        {news.map((item, index) => (
-          <motion.li
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="border-b border-gray-700 pb-4"
-          >
-            <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-            <p className="text-gray-400 mb-2">{item.teaser}</p>
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>{item.author}</span>
-              <span>{new Date(item.created).toLocaleString()}</span>
-            </div>
-            <motion.a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-blue-400 hover:text-blue-300 mt-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Read More <FaExternalLinkAlt className="ml-1" />
-            </motion.a>
-          </motion.li>
-        ))}
-      </ul>
     </div>
   );
 };

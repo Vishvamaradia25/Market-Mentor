@@ -38,7 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Homepage />} />
         <Route path="/company/paras" element={<ParasDefenceProfile />} />
-        <Route path="/company/waree" element={<WareeProfile />} />
+        <Route path="/company/waaree" element={<WareeProfile />} />
         <Route path="/company/hal" element={<HALProfile />} />
         <Route path="/company/ace" element={<ACEProfile />} />
         <Route path="/company/wipro" element={<WiproProfile />} />

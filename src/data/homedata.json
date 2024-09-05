@@ -1,86 +1,329 @@
 {
-  "stocks": [
-    { "symbol": "AAPL", "name": "Apple Inc.", "price": 150.25, "change": 1.5, "volume": 82345670, "marketCap": "2.45T" },
-    { "symbol": "GOOGL", "name": "Alphabet Inc.", "price": 2750.80, "change": -0.5, "volume": 1234567, "marketCap": "1.84T" },
-    { "symbol": "MSFT", "name": "Microsoft Corporation", "price": 305.75, "change": 0.8, "volume": 23456789, "marketCap": "2.31T" },
-    { "symbol": "AMZN", "name": "Amazon.com, Inc.", "price": 3380.20, "change": -0.2, "volume": 3456789, "marketCap": "1.71T" },
-    { "symbol": "FB", "name": "Meta Platforms, Inc.", "price": 330.15, "change": 2.1, "volume": 15678901, "marketCap": "927.26B" },
-    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 750.80, "change": -0.5, "volume": 28901234, "marketCap": "756.22B" },
-    { "symbol": "NVDA", "name": "NVIDIA Corporation", "price": 205.75, "change": 0.8, "volume": 34567890, "marketCap": "512.31B" }
-  ],
-  "watchedStocks": [
-    { "symbol": "AAPL", "name": "Apple Inc.", "price": 150.25, "change": 1.5, "volume": 82345670, "marketCap": "2.45T" },
-    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 750.80, "change": -0.5, "volume": 28901234, "marketCap": "756.22B" },
-    { "symbol": "NVDA", "name": "NVIDIA Corporation", "price": 205.75, "change": 0.8, "volume": 34567890, "marketCap": "512.31B" },
-    { "symbol": "AMD", "name": "Advanced Micro Devices, Inc.", "price": 90.20, "change": -0.2, "volume": 45678901, "marketCap": "109.41B" },
-    { "symbol": "MSFT", "name": "Microsoft Corporation", "price": 305.15, "change": 2.1, "volume": 23456789, "marketCap": "2.31T" }
-  ],
-  "markets": [
-    { "name": "S&P 500", "value": 4185.47, "change": 0.75, "icon": "FaChartLine", "volume": "2.3B", "yearToDate": "11.45%" },
-    { "name": "Dow Jones", "value": 33800.60, "change": -0.16, "icon": "FaGlobeAmericas", "volume": "323.4M", "yearToDate": "10.52%" },
-    { "name": "NASDAQ", "value": 14041.91, "change": 0.51, "icon": "FaCoins", "volume": "4.5B", "yearToDate": "8.95%" },
-    { "name": "Russell 2000", "value": 2261.46, "change": 0.88, "icon": "FaChartBar", "volume": "1.1B", "yearToDate": "14.62%" },
-    { "name": "Crude Oil", "value": 63.13, "change": 0.21, "icon": "FaOilCan", "volume": "1.2M", "yearToDate": "30.12%" },
-    { "name": "Gold", "value": 1768.30, "change": -0.45, "icon": "FaCoins", "volume": "174.3K", "yearToDate": "-6.85%" },
-    { "name": "10-Year Treasury", "value": 1.58, "change": 0.02, "icon": "FaFileInvoiceDollar", "volume": "N/A", "yearToDate": "72.53%" }
-  ],
-  "topMovers": [
-    { "symbol": "GME", "name": "GameStop Corp.", "price": 158.36, "change": 18.76, "volume": 14567890, "sector": "Consumer Cyclical", "dayRange": "145.20 - 165.45" },
-    { "symbol": "TSLA", "name": "Tesla, Inc.", "price": 677.02, "change": -3.39, "volume": 28901234, "sector": "Auto Manufacturers", "dayRange": "670.32 - 699.98" },
-    { "symbol": "PLTR", "name": "Palantir Technologies", "price": 23.29, "change": 6.21, "volume": 76543210, "sector": "Technology", "dayRange": "22.15 - 24.50" },
-    { "symbol": "NIO", "name": "NIO Inc.", "price": 38.12, "change": -4.56, "volume": 87654321, "sector": "Auto Manufacturers", "dayRange": "37.25 - 40.18" },
-    { "symbol": "AAPL", "name": "Apple Inc.", "price": 133.11, "change": 2.02, "volume": 82345670, "sector": "Technology", "dayRange": "131.45 - 134.20" },
-    { "symbol": "COIN", "name": "Coinbase Global, Inc.", "price": 294.75, "change": 10.35, "volume": 23456789, "sector": "Financial Services", "dayRange": "280.10 - 301.25" },
-    { "symbol": "MRNA", "name": "Moderna, Inc.", "price": 165.89, "change": -5.67, "volume": 9876543, "sector": "Healthcare", "dayRange": "162.30 - 172.45" }
-  ],
-  "sectorPerformance": [
-    { "name": "Technology", "change": 1.25, "ytdChange": 15.3 },
-    { "name": "Healthcare", "change": -0.5, "ytdChange": 8.7 },
-    { "name": "Financials", "change": 0.8, "ytdChange": 22.1 },
-    { "name": "Consumer Discretionary", "change": 0.3, "ytdChange": 11.9 },
-    { "name": "Industrials", "change": 1.1, "ytdChange": 14.5 },
-    { "name": "Energy", "change": -1.2, "ytdChange": 30.2 }
-  ],
-    "companies": [
-      {
-        "symbol": "HAL",
-        "name": "Hindustan Aeronautics Limited",
-        "logo": "https://swarajya.gumlet.io/swarajya%2F2019-04%2F9a43ba87-7eeb-4e43-9a39-6bb66e911f17%2Fhal.png?format=auto",
-        "price": 3850.25,
-        "change": 45.75,
-        "marketCap": "257,000 Cr"
+  "featuredCompanies": [
+    {
+      "symbol": "HAL",
+      "name": "Hindustan Aeronautics Limited",
+      "logo": "https://swarajya.gumlet.io/swarajya%2F2019-04%2F9a43ba87-7eeb-4e43-9a39-6bb66e911f17%2Fhal.png?format=auto",
+      "currentPrice": 3850.25,
+      "predictedPrice": 3920.50,
+      "aiConfidence": 0.85,
+      "keyInsights": [
+        "Strong government collaboration in defense sector",
+        "Expanding into commercial aviation",
+        "Positive outlook due to increased defense spending"
+      ],
+      "financialMetrics": {
+        "pe": 22.5,
+        "marketCap": "257,000 Cr",
+        "dividendYield": 2.1,
+        "debtToEquity": 0.15
       },
-      {
-        "symbol": "PARAS",
-        "name": "Paras Defence and Space Technologies Ltd",
-        "logo": "https://logo.clearbit.com/parasdefence.com",
-        "price": 681.15,
-        "change": -3.85,
-        "marketCap": "2,658 Cr"
+      "sentimentAnalysis": {
+        "overall": "Positive",
+        "score": 0.78,
+        "recentMentions": 1250
       },
-      {
-        "symbol": "WAAREE",
-        "name": "Waaree Renewable Technologies Ltd",
-        "logo": "https://logo.clearbit.com/waaree.com",
-        "price": 850.75,
-        "change": 12.25,
-        "marketCap": "1,701 Cr"
+      "historicalData": [
+        { "date": "2023-01", "price": 3500 },
+        { "date": "2023-02", "price": 3600 },
+        { "date": "2023-03", "price": 3550 },
+        { "date": "2023-04", "price": 3700 },
+        { "date": "2023-05", "price": 3800 },
+        { "date": "2023-06", "price": 3850.25 }
+      ]
+    },
+    {
+      "symbol": "PARAS",
+      "name": "Paras Defence and Space Technologies Ltd",
+      "logo": "https://logo.clearbit.com/parasdefence.com",
+      "currentPrice": 681.15,
+      "predictedPrice": 710.30,
+      "aiConfidence": 0.78,
+      "keyInsights": [
+        "Innovative space technology solutions",
+        "Growing demand for defense electronics",
+        "Potential for international expansion"
+      ],
+      "financialMetrics": {
+        "pe": 35.2,
+        "marketCap": "2,658 Cr",
+        "dividendYield": 0.5,
+        "debtToEquity": 0.22
       },
-      {
-        "symbol": "ACE",
-        "name": "Action Construction Equipment Ltd",
-        "logo": "https://logo.clearbit.com/ace-cranes.com",
-        "price": 685.50,
-        "change": 5.50,
-        "marketCap": "8,172 Cr"
+      "sentimentAnalysis": {
+        "overall": "Neutral",
+        "score": 0.52,
+        "recentMentions": 450
       },
-      {
-        "symbol": "WIPRO",
-        "name": "Wipro Ltd",
-        "logo": "https://logo.clearbit.com/wipro.com",
-        "price": 425.75,
-        "change": -2.25,
-        "marketCap": "233,162 Cr"
+      "historicalData": [
+        { "date": "2023-01", "price": 620 },
+        { "date": "2023-02", "price": 635 },
+        { "date": "2023-03", "price": 650 },
+        { "date": "2023-04", "price": 645 },
+        { "date": "2023-05", "price": 670 },
+        { "date": "2023-06", "price": 681.15 }
+      ]
+    },
+    {
+      "symbol": "WAAREE",
+      "name": "Waaree Renewable Technologies Ltd",
+      "logo": "https://logo.clearbit.com/waaree.com",
+      "currentPrice": 850.75,
+      "predictedPrice": 892.40,
+      "aiConfidence": 0.82,
+      "keyInsights": [
+        "Leader in solar energy solutions",
+        "Government push for renewable energy",
+        "Expanding manufacturing capacity"
+      ],
+      "financialMetrics": {
+        "pe": 28.7,
+        "marketCap": "1,701 Cr",
+        "dividendYield": 1.2,
+        "debtToEquity": 0.35
+      },
+      "sentimentAnalysis": {
+        "overall": "Positive",
+        "score": 0.71,
+        "recentMentions": 820
+      },
+      "historicalData": [
+        { "date": "2023-01", "price": 780 },
+        { "date": "2023-02", "price": 795 },
+        { "date": "2023-03", "price": 810 },
+        { "date": "2023-04", "price": 825 },
+        { "date": "2023-05", "price": 840 },
+        { "date": "2023-06", "price": 850.75 }
+      ]
+    },
+    {
+      "symbol": "ACE",
+      "name": "Action Construction Equipment Ltd",
+      "logo": "https://logo.clearbit.com/ace-cranes.com",
+      "currentPrice": 685.50,
+      "predictedPrice": 701.25,
+      "aiConfidence": 0.76,
+      "keyInsights": [
+        "Benefiting from infrastructure development",
+        "Diversified product portfolio",
+        "Export market expansion"
+      ],
+      "financialMetrics": {
+        "pe": 18.3,
+        "marketCap": "8,172 Cr",
+        "dividendYield": 0.8,
+        "debtToEquity": 0.18
+      },
+      "sentimentAnalysis": {
+        "overall": "Positive",
+        "score": 0.65,
+        "recentMentions": 580
+      },
+      "historicalData": [
+        { "date": "2023-01", "price": 640 },
+        { "date": "2023-02", "price": 655 },
+        { "date": "2023-03", "price": 660 },
+        { "date": "2023-04", "price": 670 },
+        { "date": "2023-05", "price": 680 },
+        { "date": "2023-06", "price": 685.50 }
+      ]
+    },
+    {
+      "symbol": "WIPRO",
+      "name": "Wipro Ltd",
+      "logo": "https://logo.clearbit.com/wipro.com",
+      "currentPrice": 425.75,
+      "predictedPrice": 445.20,
+      "aiConfidence": 0.80,
+      "keyInsights": [
+        "Strong position in IT services",
+        "Expanding digital transformation offerings",
+        "Strategic acquisitions enhancing capabilities"
+      ],
+      "financialMetrics": {
+        "pe": 20.1,
+        "marketCap": "233,162 Cr",
+        "dividendYield": 2.5,
+        "debtToEquity": 0.12
+      },
+      "sentimentAnalysis": {
+        "overall": "Positive",
+        "score": 0.68,
+        "recentMentions": 1500
+      },
+      "historicalData": [
+        { "date": "2023-01", "price": 390 },
+        { "date": "2023-02", "price": 400 },
+        { "date": "2023-03", "price": 410 },
+        { "date": "2023-04", "price": 415 },
+        { "date": "2023-05", "price": 420 },
+        { "date": "2023-06", "price": 425.75 }
+      ]
+    }
+  ],
+  "marketInsights": [
+    {
+      "name": "Technology Sector",
+      "trend": "Bullish",
+      "aiConfidence": 0.88,
+      "keyFactors": [
+        "Increasing demand for cloud services",
+        "5G rollout acceleration",
+        "AI and machine learning adoption"
+      ],
+      "topPerformers": ["TCS", "Infosys", "HCL Tech"],
+      "riskFactors": [
+        "Global economic slowdown",
+        "Talent shortage",
+        "Regulatory challenges"
+      ],
+      "marketShare": {
+        "Domestic": 65,
+        "International": 35
       }
-    ]
+    },
+    {
+      "name": "Renewable Energy",
+      "trend": "Strongly Bullish",
+      "aiConfidence": 0.92,
+      "keyFactors": [
+        "Government initiatives for clean energy",
+        "Declining costs of solar and wind technologies",
+        "Growing consumer awareness and demand"
+      ],
+      "topPerformers": ["Adani Green", "Tata Power", "NTPC"],
+      "riskFactors": [
+        "Policy uncertainty",
+        "Grid integration challenges",
+        "Competition from traditional energy sources"
+      ],
+      "marketShare": {
+        "Solar": 45,
+        "Wind": 35,
+        "Others": 20
+      }
+    },
+    {
+      "name": "Defense Sector",
+      "trend": "Neutral to Bullish",
+      "aiConfidence": 0.75,
+      "keyFactors": [
+        "Geopolitical tensions",
+        "Modernization of armed forces",
+        "Focus on indigenous defense production"
+      ],
+      "topPerformers": ["HAL", "Bharat Electronics", "Bharat Dynamics"],
+      "riskFactors": [
+        "Budget constraints",
+        "Long procurement cycles",
+        "Technology transfer issues"
+      ],
+      "marketShare": {
+        "Public Sector": 70,
+        "Private Sector": 30
+      }
+    }
+  ],
+  "learningResources": [
+    {
+      "title": "Understanding LSTM-based Stock Predictions",
+      "type": "Video Tutorial",
+      "duration": "45 minutes",
+      "expertName": "Dr. Priya Sharma",
+      "expertCredentials": "AI Research Scientist, IIT Delhi",
+      "topics": [
+        "Introduction to LSTM networks",
+        "Data preparation for stock prediction",
+        "Model training and evaluation",
+        "Interpreting LSTM outputs"
+      ],
+      "difficultyLevel": "Intermediate",
+      "prerequisites": ["Basic understanding of machine learning", "Python programming"]
+    },
+    {
+      "title": "Fundamental Analysis of Indian Stocks",
+      "type": "Interactive Course",
+      "duration": "3 hours",
+      "expertName": "Rajesh Kothari",
+      "expertCredentials": "Chartered Financial Analyst, 20+ years experience",
+      "topics": [
+        "Understanding financial statements",
+        "Key financial ratios",
+        "Industry analysis",
+        "Valuation techniques"
+      ],
+      "difficultyLevel": "Beginner to Intermediate",
+      "prerequisites": ["Basic understanding of stock market"]
+    },
+    {
+      "title": "AI in Investment Decision Making",
+      "type": "Webinar",
+      "duration": "90 minutes",
+      "expertName": "Arun Jaitley",
+      "expertCredentials": "Chief Data Scientist, Leading Fintech Firm",
+      "topics": [
+        "AI-driven market analysis",
+        "Sentiment analysis in stock prediction",
+        "Machine learning models for portfolio optimization",
+        "Ethical considerations in AI-driven investing"
+      ],
+      "difficultyLevel": "Advanced",
+      "prerequisites": ["Understanding of AI/ML concepts", "Knowledge of financial markets"]
+    }
+  ],
+  "latestNews": [
+    {
+      "title": "Government Announces New Defense Procurement Policy",
+      "summary": "The policy aims to boost indigenous manufacturing in the defense sector, potentially benefiting companies like HAL and Paras Defence.",
+      "source": "Economic Times",
+      "date": "2023-09-04",
+      "relevance": 0.95,
+      "sentiment": "Positive",
+      "impactedSectors": ["Defense", "Manufacturing"],
+      "stocksToWatch": ["HAL", "PARAS", "BEL"]
+    },
+    {
+      "title": "Renewable Energy Sector Set for Exponential Growth",
+      "summary": "Expert analysis suggests a 20% CAGR for the renewable energy sector over the next 5 years, with solar leading the charge.",
+      "source": "LiveMint",
+      "date": "2023-09-03",
+      "relevance": 0.88,
+      "sentiment": "Highly Positive",
+      "impactedSectors": ["Renewable Energy", "Power Generation"],
+      "stocksToWatch": ["WAAREE", "ADANIGREEN", "TATAPOWER"]
+    },
+    {
+      "title": "IT Services Giants Focusing on AI and ML Capabilities",
+      "summary": "Major IT firms like Wipro are heavily investing in AI and machine learning to stay competitive in the global market.",
+      "source": "Business Standard",
+      "date": "2023-09-02",
+      "relevance": 0.85,
+      "sentiment": "Positive",
+      "impactedSectors": ["Information Technology", "Artificial Intelligence"],
+      "stocksToWatch": ["WIPRO", "TCS", "INFY"]
+    }
+  ],
+  "economicIndicators": [
+    {
+      "name": "GDP Growth Rate",
+      "value": 7.2,
+      "previousValue": 6.8,
+      "trend": "Increasing",
+      "impact": "Positive for overall market"
+    },
+    {
+      "name": "Inflation Rate",
+      "value": 4.5,
+      "previousValue": 4.8,
+      "trend": "Decreasing",
+      "impact": "Favorable for consumer spending"
+    },
+    {
+      "name": "Repo Rate",
+      "value": 6.5,
+      "previousValue": 6.5,
+      "trend": "Stable",
+      "impact": "Neutral for borrowing costs"
+    }
+  ]
 }
