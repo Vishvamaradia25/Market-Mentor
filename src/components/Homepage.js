@@ -1,13 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaRobot, FaChartLine, FaNewspaper, FaGraduationCap, FaSearch, FaBell, FaUser, FaStar } from 'react-icons/fa';
+import { FaRobot, FaChartLine, FaNewspaper, FaGraduationCap, FaSearch, FaBell, FaExternalLinkAlt, FaStar } from 'react-icons/fa';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link, useNavigate } from 'react-router-dom';
 import AIInvestmentSimulator from './AISearch';
 // Assume these are imported from your data file
 import homedata from '../data/homedata.json';
 import logo from '../assets/Screenshot 2024-09-05 at 11.00.11 PM.png'
+import axios from 'axios';
 
+
+
+const NewsWidget = ({ news, loading, error }) => {
+  if (loading) {
+    return <div className="bg-gray-800 rounded-lg p-4">Loading news...</div>;
+  }
+
+  if (error) {
+    return <div className="bg-gray-800 rounded-lg p-4 text-red-500">{error}</div>;
+  }
+
+  return (
+    <div className="bg-gray-900 rounded-lg p-4 m-20">
+      <h2 className="text-xl font-bold mb-4 flex items-center">
+        <FaNewspaper className="mr-2" />
+        Latest News
+      </h2>
+      <ul className="space-y-4">
+        {news.map((item, index) => (
+          <motion.li
+            key={index}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            className="border-b border-gray-700 pb-4"
+          >
+            <h3 className="font-bold text-lg mb-2 text-white">{item.title}</h3>
+            <p className="text-white0 mb-2">{item.teaser}</p>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>{item.author}</span>
+              <span>{new Date(item.created).toLocaleString()}</span>
+            </div>
+            <motion.a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-blue-400 hover:text-blue-300 mt-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Read More <FaExternalLinkAlt className="ml-1" />
+            </motion.a>
+          </motion.li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 const HomePage = () => {
   const [aiQuery, setAiQuery] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -15,7 +64,33 @@ const HomePage = () => {
   const [hoveredCompany, setHoveredCompany] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
-
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get('https://api.benzinga.com/api/v2/news', {
+          params: {
+            token: '8ca505e300894b0d87d3c91033dc0b6d',
+            pageSize: 5,
+            displayOutput: 'full',
+            sortBy: 'date',
+            dateFrom: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          }
+        });
+  
+        setNews(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching news:", err);
+        setError("Failed to fetch news. Please try again later.");
+        setLoading(false);
+      }
+    };
+  
+    fetchNews();
+  }, []);
   useEffect(() => {
     const loadFavorites = () => {
       try {
@@ -69,7 +144,7 @@ const HomePage = () => {
                   transition={{ duration: 0.5 }}
                 />
                 <div className="ml-10 flex items-baseline space-x-4">
-                  {['dashboard', 'predictions', 'analysis', 'learn'].map((item) => (
+                  {['dashboard', 'predictions'].map((item) => (
                     <motion.button
                       key={item}
                       onClick={() => setActiveSection(item)}
@@ -207,33 +282,7 @@ const HomePage = () => {
             )}
           </AnimatePresence>
 
-          {/* News Feed */}
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <h2 className="text-2xl font-bold mb-4 flex items-center">
-              <FaNewspaper className="mr-2" /> Market Insights
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {homedata.latestNews.map((news, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-gray-800 bg-opacity-50 rounded-lg p-4 backdrop-filter backdrop-blur-lg"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <h3 className="text-lg font-semibold mb-2">{news.title}</h3>
-                  <p className="text-sm text-gray-300 mb-2">{news.summary}</p>
-                  <div className="flex justify-between items-center text-xs text-gray-400">
-                    <span>{news.source}</span>
-                    <span>{news.date}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+     
 
           {/* Trading Simulator */}
          {/* Replace the existing Trading Simulator section with this */}
@@ -251,6 +300,7 @@ const HomePage = () => {
 </motion.div>
         </main>
       </div>
+      <NewsWidget news={news} loading={loading} error={error} />
     </div>
   );
 };
