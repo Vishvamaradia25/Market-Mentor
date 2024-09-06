@@ -8,6 +8,7 @@ import AIInvestmentSimulator from './AISearch';
 import homedata from '../data/homedata.json';
 import logo from '../assets/Screenshot 2024-09-05 at 11.00.11 PM.png'
 import axios from 'axios';
+import ChartsSection from './ChartsSection';
 
 
 
@@ -222,13 +223,15 @@ const HomePage = () => {
             </AnimatePresence>
           </motion.div>
 
-        {/* Market Pulse */}
-        <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          {activeSection === 'dashboard' ? (
+  <>
+    {/* Market Pulse */}
+    <motion.div
+      className="mb-8"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
             <h2 className="text-2xl font-bold mb-4 flex items-center">
               <FaChartLine className="mr-2" /> Market Pulse
             </h2>
@@ -263,7 +266,10 @@ const HomePage = () => {
       ))}
     </div>
           </motion.div>
-
+          </>
+) : (
+  <ChartsSection />
+)}
           {/* Hovering Company Details */}
           <AnimatePresence>
             {hoveredCompany && (
